@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 import string
 
 app = Flask(__name__)
@@ -7,7 +7,7 @@ hesh = [{"id" : 55, "text" : "Текст 1"}, {"id" : 56, "text" : "Текст 2
 
 @app.route("/index")
 def index():
-  return "index"
+  return render_template('index.html')
 
 @app.route("/about")
 @app.route("/")
