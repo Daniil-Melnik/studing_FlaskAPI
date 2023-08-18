@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% block title -%}
+    {% if title %}
+      <title>{{ title }}</title>
+    {% else %}
+      <title>Страница</title>
+    {% endif %}
+    {% endblock %}
+  </head>
+  <body>
+    {% block content -%}
+    {% if title %}
+      <h1>{{ title }}</h1>
+    {% else %}
+      <h1>Страница</h1>
+    {% endif %}
+      {%- block mainmenu -%}
+        <ul>
+          {% for m in hesh %}
+          <li>{{ m["text"] }} {{ m["id"] }}</li>
+          {% endfor %}
+        </ul>
+      {% endblock mainmenu -%}
+      
+    {% endblock %}
+  </body>
+</html>

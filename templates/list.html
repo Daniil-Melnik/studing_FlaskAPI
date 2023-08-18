@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>{{ title }}</title>
-  </head>
-  <body>
-    <h1>{{ title }}</h1>
-    <ul>
-      {% for m in hesh %}
-      <li>{{ m["text"] }} {{ m["id"] }}</li>
-      {% endfor %}
-    </ul>
-  </body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+{{ super() }}
+<p>Содержимое страницы со списком
+{% endblock %}
