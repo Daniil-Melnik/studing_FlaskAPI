@@ -7,7 +7,7 @@ _hesh = [{"id" : 55, "text" : "Текст 1"}, {"id" : 56, "text" : "Текст 
 
 @app.route("/index")
 def index():
-  return render_template('index.html', title = "Главная страница")
+  return render_template('index.html')
 
 @app.route("/about")
 def about():
