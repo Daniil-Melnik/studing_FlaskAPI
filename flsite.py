@@ -10,14 +10,8 @@ def index():
   return render_template('index.html')
 
 @app.route("/about")
-@app.route("/")
 def about():
-  st = "<h1>О сайте</h1>"
-  for li in hesh:
-    q = str(li["id"])
-    t = str(li["text"])
-    st+="<li>" + q + " " + t + "</li>"
-  return st
+  return render_template('about.html')
 
 if __name__ == "__main__":
   app.run(debug = True)
