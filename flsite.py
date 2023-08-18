@@ -7,11 +7,11 @@ hesh = [{"id" : 55, "text" : "Текст 1"}, {"id" : 56, "text" : "Текст 2
 
 @app.route("/index")
 def index():
-  return render_template('index.html')
+  return render_template('index.html', title = "Главная страница")
 
 @app.route("/about")
 def about():
-  return render_template('about.html')
+  return render_template('about.html', title = "О сайте")
 
 if __name__ == "__main__":
   app.run(debug = True)
