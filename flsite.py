@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, flash, session, redirect
+from flask import Flask, render_template, url_for, request, flash, session, redirect, abort
 import os
 import string
 
@@ -37,6 +37,8 @@ def contact():
 
 @app.route("/profile/<username>")
 def profile(username):
+  if 'userLogged' not in session or session['userLogged'] != username:
+    abort(401)
   return f"Пользователь: {username}"
 
 @app.route("/login", methods={"POST", "GET"})
