@@ -16,7 +16,7 @@
       {%- block mainmenu -%}
         <ul class="mainmenu">
           {% for m in hesh %}
-          <li>{{ m["text"] }} {{ m["id"] }}</li>
+          <li><a href="{{m.url}}">{{m.name}}</a></li>
           {% endfor %}
         </ul>
       {% endblock mainmenu -%}

@@ -3,7 +3,9 @@ import string
 
 app = Flask(__name__)
 
-_hesh = [{"id" : 55, "text" : "Текст 1"}, {"id" : 56, "text" : "Текст 2"}, {"id" : 57, "text" : "Текст 3"}, {"id" : 58, "text" : "Текст 4"}, {"id" : 59, "text" : "Текст 5"}]
+_hesh = [{"name": "Установка", "url": "install-flask"},
+         {"name": "Первое приложение", "url": "first-app"},
+         {"name": "Обратная связь", "url": "contact"}]
 
 @app.route("/index")
 def index():
@@ -19,6 +21,11 @@ def about():
 def list():
   print( url_for('list') )
   return render_template('list.html', title = "Список", hesh = _hesh)
+
+@app.route("/contact")
+def contact():
+  print( url_for('contact') )
+  return render_template('contacts.html', title = "Контакты")
 
 @app.route("/profile/<username>/<data>")
 def profile(username, data):
