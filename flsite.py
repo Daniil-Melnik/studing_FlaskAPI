@@ -22,7 +22,7 @@ def list():
 
 @app.route("/profile/<username>/<data>")
 def profile(username, data):
-  print( url_for('list') )
+  print( url_for('profile', username="user1", data=123) )
   return f"Пользователь: {username}, Данные: {data}"
 
 # with app.test_request_context():
