@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request
 import string
 
 app = Flask(__name__)
@@ -22,10 +22,11 @@ def list():
   print( url_for('list') )
   return render_template('list.html', title = "Список", hesh = _hesh)
 
-@app.route("/contact")
+@app.route("/contact", methods=["POST", "GET"])
 def contact():
-  print( url_for('contact') )
-  return render_template('contacts.html', title = "Контакты")
+  if request.method == 'POST':
+    print(request.form)
+  return render_template('contact.html', title = "Обратная связь", hesh = _hesh)
 
 @app.route("/profile/<username>/<data>")
 def profile(username, data):
