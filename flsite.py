@@ -20,5 +20,13 @@ def list():
   print( url_for('list') )
   return render_template('list.html', title = "Список", hesh = _hesh)
 
+@app.route("/profile/<username>/<data>")
+def profile(username, data):
+  print( url_for('list') )
+  return f"Пользователь: {username}, Данные: {data}"
+
+# with app.test_request_context():
+#   print( url_for('index') )
+
 if __name__ == "__main__":
   app.run(debug = True)
