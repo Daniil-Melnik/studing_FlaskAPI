@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, flash
+from flask import Flask, render_template, url_for, request, flash, session, redirect
 import os
 import string
 
@@ -27,7 +27,6 @@ def list():
 
 @app.route("/contact", methods=["POST", "GET"])
 def contact():
-  
   if request.method == 'POST':
     if len(request.form['username']) > 2:
       flash('Сообщение отправлено', category="success")
@@ -36,10 +35,18 @@ def contact():
     print(request.form)
   return render_template('contact.html', title = "Обратная связь", hesh = _hesh)
 
-@app.route("/profile/<username>/<data>")
-def profile(username, data):
-  print( url_for('profile', username="user1", data=123) )
-  return f"Пользователь: {username}, Данные: {data}"
+@app.route("/profile/<username>")
+def profile(username):
+  return f"Пользователь: {username}"
+
+@app.route("/login", methods={"POST", "GET"})
+def login():
+  if 'userLogged' in session:
+    return redirect(url_for('profile', username=session['userLogged']))
+  elif request.method == 'POST' and request.form['username'] == "dan" and request.form['psw'] == "123":
+    session['userLogged'] = request.form['username']
+    return redirect(url_for('profile', username=session['userLogged']))
+  return render_template('login.html', title="Авторизация", hesh = _hesh)
 
 @app.errorhandler(404)
 def pageNotFound(error):
