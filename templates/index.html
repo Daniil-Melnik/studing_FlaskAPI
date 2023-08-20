@@ -1,17 +1,5 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    {% if title %}
-      <title>{{ title }}</title>
-    {% else %}
-      <title>Страница</title>
-    {% endif %}
-  </head>
-  <body>
-    {% if title %}
-      <h1>{{ title }}</h1>
-    {% else %}
-      <h1>Страница</h1>
-    {% endif %}
-  </body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+{{ super() }}
+{% endblock %}

@@ -13,7 +13,7 @@ _hesh = [{"name": "Установка", "url": "install-flask"},
 @app.route("/index")
 def index():
   print( url_for('index') )
-  return render_template('index.html')
+  return render_template('index.html', title="Главная", hesh=_hesh)
 
 @app.route("/about")
 def about():
@@ -40,6 +40,10 @@ def contact():
 def profile(username, data):
   print( url_for('profile', username="user1", data=123) )
   return f"Пользователь: {username}, Данные: {data}"
+
+@app.errorhandler(404)
+def pageNotFound(error):
+  return render_template('page404.html', title="Страница не найдена", hesh=_hesh)
 
 # with app.test_request_context():
 #   print( url_for('index') )
