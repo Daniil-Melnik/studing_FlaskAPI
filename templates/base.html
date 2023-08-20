@@ -12,19 +12,22 @@
   </head>
   <body>
     {% block content -%}
-    {% if title %}
-      <h1>{{ title }}</h1>
-    {% else %}
-      <h1>Страница</h1>
-    {% endif %}
+    
       {%- block mainmenu -%}
-        <ul>
+        <ul class="mainmenu">
           {% for m in hesh %}
           <li>{{ m["text"] }} {{ m["id"] }}</li>
           {% endfor %}
         </ul>
       {% endblock mainmenu -%}
-      
-    {% endblock %}
+      <div class="clear"></div>
+      <div class="content">
+        {% if title %}
+          <h1>{{ title }}</h1>
+        {% else %}
+          <h1>Страница</h1>
+        {% endif %}
+        {% endblock %}
+      </div>      
   </body>
 </html>
