@@ -38,4 +38,13 @@ class FDataBase:
       print("Ошибка получения статьи из БД" + str(e))
     
     return (False, False)
-    
+  
+  def getPostsAnnonce(self):
+    try:
+      self.__cur.execute(f"SELECT id, title, text FROM posts ORDER BY time DESC")
+      res = self.__cur.fetchall()
+      if res: return res
+    except sqlite3.Error as e:
+      print ("Ошибка получения статьи из БД" + str(e))
+
+    return []
