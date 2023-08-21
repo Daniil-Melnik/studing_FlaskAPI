@@ -42,5 +42,7 @@ def close_db(error):
   if hasattr(g, 'link_db'):
     g.link_db.close()
 
-if __name__ == "__main__":
-    app.run(debug = True)
+# if __name__ == "__main__":
+#     app.run(debug = True)
+
+create_db()
