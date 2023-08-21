@@ -27,4 +27,15 @@ class FDataBase:
       print("Ошибка добавления статьи в БД" + str(e))
       return False
     return True
+  
+  def getPost(self, postId):
+    try:
+      self.__cur.execute(f"SELECT title, text FROM posts WHERE id = {postId} LIMIT 1")
+      res = self.__cur.fetchone()
+      if res:
+        return res
+    except sqlite3.Error as e:
+      print("Ошибка получения статьи из БД" + str(e))
+    
+    return (False, False)
     
