@@ -1,6 +1,6 @@
 import sqlite3
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, g
 
 # configuration
 DATABASE = '/tmp/flsite.db'
@@ -23,8 +23,21 @@ def create_db():
     db.cursor().executescript(f.read())
   db.commit()
   db.close()
-   
-create_db()
 
-# if __name__ == "__main__":
-#     app.run(debug = True)
+def get_db():
+  if not hasattr(g, 'link_db'):
+    g.link_db = connect_db()
+  return g.link_db
+   
+@app.route("/index")
+def index():
+  db = get_db()
+  return render_template('index.html', menu = [])
+
+@app.teardown_appcontext
+def close_db(error):
+  if hasattr(g, 'link_db'):
+    g.link_db.close()
+
+if __name__ == "__main__":
+    app.run(debug = True)
