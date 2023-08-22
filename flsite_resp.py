@@ -1,4 +1,4 @@
-from flask import Flask, make_response, redirect, render_template, url_for
+from flask import Flask, make_response, redirect, render_template, request, url_for
 
 app = Flask(__name__)
 
@@ -27,6 +27,21 @@ def index_text():
 @app.route('/transfer')
 def transfer():
   return redirect(url_for('index_text'), 301)
+
+@app.route('/login')
+def login():
+  log = ""
+  if request.cookies.get('logged'):
+    log = request.cookies.get('logged')
+  res = make_response(f"<h1>Форма авторизации</h1><p>logged: {log}")
+  res.set_cookie("logged", "yes", 30*24*3600)
+  return res
+
+@app.route('/logout')
+def logout():
+  res = make_response(f"<p>Вы больше не авторизованы!")
+  res.set_cookie("logged", "", 0)
+  return res
 
 if __name__ == "__main__":
     app.run(debug = True)
