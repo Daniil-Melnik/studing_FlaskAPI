@@ -30,11 +30,15 @@ def get_db():
     g.link_db = connect_db()
   return g.link_db
 
+dbase = None
+@app.before_request
+def before_request():
+  global dbase
+  db = get_db()
+  dbase = FDataBase(db)
 
 @app.route("/")
 def index():
-  db = get_db()
-  dbase = FDataBase(db)
   return render_template('index_db.html', title = "Главная",hesh = dbase.getMenu(), posts = dbase.getPostsAnnonce())
 
 @app.teardown_appcontext
@@ -44,9 +48,6 @@ def close_db(error):
 
 @app.route("/add_post", methods=["POST", "GET"])
 def addPost():
-  db = get_db()
-  dbase = FDataBase(db)
-
   if request.method == "POST":
     if len(request.form['name']) > 4 and len(request.form['post']) > 10:
       res = dbase.addPost(request.form['name'], request.form['post'], request.form['url'])
@@ -60,13 +61,20 @@ def addPost():
 
 @app.route("/post/<alias>")
 def showPost(alias):
-  db = get_db()
-  dbase = FDataBase(db)
   title, post = dbase.getPost(alias)
   if not title:
     abort(404)
-    
   return render_template('post.html', hesh = dbase.getMenu(), title=title, post=post)
+
+@app.route("/login")
+def login():
+  return render_template("login.html", hesh = dbase.getMenu(), title = "Авторизация")
+
+@app.route("/register")
+def register():
+  return render_template("register.html", hesh = dbase.getMenu(), title = "Регистрация")
+    
+  
 
 if __name__ == "__main__":
     app.run(debug = True)
