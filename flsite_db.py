@@ -4,7 +4,7 @@ from flask import Flask, abort, flash, redirect, render_template, request, g, ur
 from FDataBase import FDataBase
 from UserLogin import UserLogin
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager
+from flask_login import LoginManager, login_required, login_user
 
 # configuration
 DATABASE = '/tmp/flsite.db'
@@ -70,14 +70,23 @@ def addPost():
   return render_template('add_post.html', hesh = dbase.getMenu(), title = "Добавление статьи")
 
 @app.route("/post/<alias>")
+@login_required
 def showPost(alias):
   title, post = dbase.getPost(alias)
   if not title:
     abort(404)
   return render_template('post.html', hesh = dbase.getMenu(), title=title, post=post)
 
-@app.route("/login")
+@app.route("/login", methods = ["GET", "POST"])
 def login():
+  if request.method == 'POST':
+    user = dbase.getUserByEmail(request.form['email'])
+    if user and check_password_hash(user['psw'], request.form['psw']):
+      userlogin = UserLogin().create(user)
+      login_user(userlogin)
+      return redirect(url_for('index'))
+    
+    flash("Неверная пара логин-пароль", "error")
   return render_template("login.html", hesh = dbase.getMenu(), title = "Авторизация")
 
 @app.route("/register", methods = ["POST", "GET"])
