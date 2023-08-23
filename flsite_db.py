@@ -2,7 +2,9 @@ import sqlite3
 import os
 from flask import Flask, abort, flash, redirect, render_template, request, g, url_for
 from FDataBase import FDataBase
+from UserLogin import UserLogin
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager
 
 # configuration
 DATABASE = '/tmp/flsite.db'
@@ -13,6 +15,13 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 
 app.config.update(dict(DATABASE=os.path.join(app.root_path, 'flsite.db')))
+
+login_manager = LoginManager(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+  print("load user")
+  return UserLogin().fromDB(user_id, dbase)
 
 def connect_db():
   conn = sqlite3.connect(app.config['DATABASE'])
@@ -85,7 +94,7 @@ def register():
         flash("Ошибка при добавлении в БД", "error")
     else:
       flash("Неверно заполнены поля", "error")
-      
+
   return render_template("register.html", hesh = dbase.getMenu(), title = "Регистрация")
 
 
