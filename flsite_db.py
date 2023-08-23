@@ -90,7 +90,7 @@ def login():
       userlogin = UserLogin().create(user)
       rm = True if request.form.get('remainme') else False
       login_user(userlogin, remember = rm)
-      return redirect(url_for('profile'))
+      return redirect(request.args.get("next") or url_for('profile'))
     
     flash("Неверная пара логин-пароль", "error")
   return render_template("login.html", hesh = dbase.getMenu(), title = "Авторизация")
