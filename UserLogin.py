@@ -11,3 +11,9 @@ class UserLogin(UserMixin):
     
   def get_id(self):
     return str(self.__user['id'])
+  
+  def getName(self):
+    return self.__user['name'] if self.__user else "Без имени"
+  
+  def getEmail(self):
+    return self.__user['email'] if self.__user else "Без email"
