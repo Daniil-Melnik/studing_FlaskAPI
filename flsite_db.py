@@ -10,6 +10,7 @@ from flask_login import LoginManager, current_user, login_required, login_user, 
 DATABASE = '/tmp/flsite.db'
 DEBUG = True
 SECRET_KEY = "qseft1234"
+MAX_CONTENT_LENGTH = 1024 * 1024
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -123,8 +124,7 @@ def logout():
 @app.route("/profile")
 @login_required
 def profile():
-  return f"""<p><a href="{url_for('logout')}">Выйти из профиля</a>
-              <p>user info: {current_user.get_id()}"""
+  return render_template("profile.html", hesh = dbase.getMenu(), title = "Профиль")
 
 if __name__ == "__main__":
     app.run(debug = True)
