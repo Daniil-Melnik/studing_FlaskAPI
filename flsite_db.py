@@ -17,6 +17,9 @@ app.config.from_object(__name__)
 app.config.update(dict(DATABASE=os.path.join(app.root_path, 'flsite.db')))
 
 login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+login_manager.login_message = "Авторизуйтесь для доступа к закрытым данным"
+login_manager.login_message_category = "success"
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -79,6 +82,8 @@ def showPost(alias):
 
 @app.route("/login", methods = ["GET", "POST"])
 def login():
+  if current_user.is_authenticated:
+    return redirect(url_for('profile'))
   if request.method == 'POST':
     user = dbase.getUserByEmail(request.form['email'])
     if user and check_password_hash(user['psw'], request.form['psw']):
