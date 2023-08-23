@@ -4,7 +4,7 @@ from flask import Flask, abort, flash, redirect, render_template, request, g, ur
 from FDataBase import FDataBase
 from UserLogin import UserLogin
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager, login_required, login_user
+from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 
 # configuration
 DATABASE = '/tmp/flsite.db'
@@ -83,8 +83,9 @@ def login():
     user = dbase.getUserByEmail(request.form['email'])
     if user and check_password_hash(user['psw'], request.form['psw']):
       userlogin = UserLogin().create(user)
-      login_user(userlogin)
-      return redirect(url_for('index'))
+      rm = True if request.form.get('remainme') else False
+      login_user(userlogin, remember = rm)
+      return redirect(url_for('profile'))
     
     flash("Неверная пара логин-пароль", "error")
   return render_template("login.html", hesh = dbase.getMenu(), title = "Авторизация")
@@ -106,7 +107,19 @@ def register():
 
   return render_template("register.html", hesh = dbase.getMenu(), title = "Регистрация")
 
+@app.route("/logout")
+@login_required
+def logout():
+  logout_user()
+  flash("Вы вышли из аккаунта", "success")
+  return redirect(url_for('login'))
 
+
+@app.route("/profile")
+@login_required
+def profile():
+  return f"""<p><a href="{url_for('logout')}">Выйти из профиля</a>
+              <p>user info: {current_user.get_id()}"""
 
 if __name__ == "__main__":
     app.run(debug = True)
