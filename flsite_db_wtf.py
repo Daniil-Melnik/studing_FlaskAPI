@@ -5,6 +5,7 @@ from FDataBase import FDataBase
 from UserLogin import UserLogin
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
+from admin.admin import admin
 
 from forms import LoginForm, RegisterForm
 
@@ -16,8 +17,9 @@ MAX_CONTENT_LENGTH = 1024 * 1024
 
 app = Flask(__name__)
 app.config.from_object(__name__)
-
 app.config.update(dict(DATABASE=os.path.join(app.root_path, 'flsite.db')))
+
+app.register_blueprint(admin, url_prefix='/admin')
 
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
@@ -99,16 +101,6 @@ def login():
     
     flash("Неверная пара логин-пароль", "error")
   return render_template('login_wtf.html', hesh = dbase.getMenu(), title = "Авторизация", form = form)
-  # if request.method == 'POST':
-  #   user = dbase.getUserByEmail(request.form['email'])
-  #   if user and check_password_hash(user['psw'], request.form['psw']):
-  #     userlogin = UserLogin().create(user)
-  #     rm = True if request.form.get('remainme') else False
-  #     login_user(userlogin, remember = rm)
-  #     return redirect(request.args.get("next") or url_for('profile'))
-    
-  #   flash("Неверная пара логин-пароль", "error")
-  # return render_template("login.html", hesh = dbase.getMenu(), title = "Авторизация")
 
 @app.route("/register", methods = ["POST", "GET"])
 def register():
