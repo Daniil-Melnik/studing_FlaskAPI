@@ -3,7 +3,12 @@ from wtforms import StringField, SubmitField, BooleanField, PasswordField
 from wtforms.validators import DataRequired, Email, Length
 
 class LoginForm(FlaskForm):
-    email = StringField("Email: ", validators = [Email()])
-    psw = PasswordField("Пароль: ", validators = [DataRequired(), Length(min = 4, max = 100)])
+    email = StringField("Email: ", validators = [Email("Некорректный email")])
+    psw = PasswordField("Пароль: ", validators = [DataRequired(), Length(min = 4, max = 100, message = "Пароль дб от 4 до 100 символов")])
     remember = BooleanField("Запомнить", default = False)
     submit = SubmitField("Войти")
+
+class RegisterForm(FlaskForm):
+    name = StringField("Имя: ", validators = [Length (min = 4, max = 100, message = "Имя должно быть от 4 до 100 символов")])
+    email = StringField("Email: ", validators = [Email("Некорректный email")])
+    psw = PasswordField("Пароль: ", validators = [DataRequired(), Length(min = 4, max = 100, message = "Пароль дб от 4 до 100 символов")])
