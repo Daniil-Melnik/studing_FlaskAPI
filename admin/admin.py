@@ -5,6 +5,7 @@ admin = Blueprint('admin', __name__, template_folder='templates', static_folder=
 
 _hesh = [{"url": '.index', "title": 'Панель'},
          {"url": '.listpubs', "title": 'Список статей'},
+         {"url": '.listusers', "title": 'Список пользователей'},
          {'url': '.logout', 'title': 'Выйти'}]
 
 
@@ -72,3 +73,19 @@ def listpubs():
             print("Ошибка получения статей из БД " + str(e))
 
     return render_template('admin/listpubs.html', title='Список статей', hesh = _hesh, list=list)
+
+@admin.route('/list-users')
+def listusers():
+    if not is_logged():
+        return redirect(url_for('.login'))
+
+    list = []
+    if db:
+        try:
+            cur = db.cursor()
+            cur.execute(f"SELECT name, email FROM users ORDER BY time DESC")
+            list = cur.fetchall()
+        except sqlite3.Error as e:
+            print("Ошибка получения статей из БД " + str(e))
+
+    return render_template('admin/listusers.html', title='Список пользователей', hesk=_hesh, list=list)
