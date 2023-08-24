@@ -88,8 +88,17 @@ def login():
   if current_user.is_authenticated:
     return redirect(url_for('profile'))
   
-  form1 = LoginForm()
-  return render_template('login_wtf.html', hesh = dbase.getMenu(), title = "Авторизация", form = form1)
+  form = LoginForm()
+  if form.validate_on_submit():
+    user = dbase.getUserByEmail(form.email.data)
+    if user and check_password_hash(user['psw'], form.psw.data):
+      userlogin = UserLogin().create(user)
+      rm = form.remember.data
+      login_user(userlogin, remember = rm)
+      return redirect(request.args.get("next") or url_for('profile'))
+    
+    flash("Неверная пара логин-пароль", "error")
+  return render_template('login_wtf.html', hesh = dbase.getMenu(), title = "Авторизация", form = form)
   # if request.method == 'POST':
   #   user = dbase.getUserByEmail(request.form['email'])
   #   if user and check_password_hash(user['psw'], request.form['psw']):
