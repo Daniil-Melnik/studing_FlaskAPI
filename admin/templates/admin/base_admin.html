@@ -7,7 +7,7 @@
 <body>
 {% if hesh -%}
   <ul class="mainmenu">
-    {% for p in menu %}
+    {% for p in hesh %}
     <li><a href="{{ url_for(p.url) }}">{{ p.title }}</a></li>
     {% endfor %}
   </ul>

@@ -2,12 +2,19 @@ from flask import Blueprint, flash, redirect, render_template, request, session,
 
 admin = Blueprint('admin', __name__, template_folder='templates', static_folder='static')
 
+_hesh = [{"url": '.index', "title": 'Панель'}, {'url': '.logout', 'title': 'Выйти'}]
+
 @admin.route('/')
 def index():
-  return"admin"
+  if not is_logged():
+    return redirect(url_for('.login'))
+  return render_template("admin/index.html", hesh = _hesh, title = "Админ-панель")
 
 @admin.route('/login', methods = ["POST", "GET"])
 def login():
+  if is_logged():
+    return redirect(url_for('.index'))
+  
   if request.method == 'POST':
     if request.form['user'] == "admin" and request.form['psw'] == "12345":
       login_admin()
