@@ -88,4 +88,4 @@ def listusers():
         except sqlite3.Error as e:
             print("Ошибка получения статей из БД " + str(e))
 
-    return render_template('admin/listusers.html', title='Список пользователей', hesk=_hesh, list=list)
+    return render_template('admin/listusers.html', title='Список пользователей', hesh=_hesh, list=list)
